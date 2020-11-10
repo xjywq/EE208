@@ -36,7 +36,7 @@ ROBOTSTXT_OBEY = False
 # Configure a delay for requests for the same website (default: 0)
 # See https://docs.scrapy.org/en/latest/topics/settings.html#download-delay
 # See also autothrottle settings and docs
-DOWNLOAD_DELAY = 1
+DOWNLOAD_DELAY = 0.25
 # The download delay setting will honor only one of:
 #CONCURRENT_REQUESTS_PER_DOMAIN = 16
 #CONCURRENT_REQUESTS_PER_IP = 16
@@ -63,9 +63,9 @@ DEFAULT_REQUEST_HEADERS = {
 # See https://docs.scrapy.org/en/latest/topics/downloader-middleware.html
 DOWNLOADER_MIDDLEWARES = {
   #  'DangDang.middlewares.DangdangDownloaderMiddleware': 543,
-   'DangDang.middlewares.RandomUserAgent': 1,
+  #  'DangDang.middlewares.RandomUserAgent': 1,
   #  'scrapy.contrib.downloadermiddleware.httpproxy.HttpProxyMiddleware': 110,
-  #  'DangDang.middlewares.ProxyMiddleware': 500
+   'DangDang.middlewares.ProxyMiddleware': 100,
 }
 
 # Enable or disable extensions

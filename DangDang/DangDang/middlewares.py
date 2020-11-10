@@ -24,6 +24,7 @@ def base64ify(bytes_or_str):
         return output_bytes.decode('ascii')
     else:
         return output_bytes
+
 class DangdangSpiderMiddleware:
     # Not all methods need to be defined. If a method is not defined,
     # scrapy acts as if the spider middleware does not modify the
@@ -119,7 +120,7 @@ class DangdangDownloaderMiddleware:
 
 class RandomUserAgent(object):
     """
-    docstring
+    define random agentuser
     """
     def __init__(self) -> None:
         self.ua = FakeUserAgent()
@@ -129,12 +130,13 @@ class RandomUserAgent(object):
 class ProxyMiddleware(object):                
     def process_request(self, request, spider):
         # 代理服务器(产品官网 www.16yun.cn)
-        proxyHost = "t.16yun.cn"
-        proxyPort = "31111"
+        #! 代理服务, 需要手动设置
+        proxyHost = "u5795.5.tn.16yun.cn"
+        proxyPort = "6441"
 
         # 代理验证信息
-        proxyUser = "username"
-        proxyPass = "password"
+        proxyUser = "16VZCZVF"
+        proxyPass = "944085"
 
         request.meta['proxy'] = "http://{0}:{1}".format(proxyHost,proxyPort)
 

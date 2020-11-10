@@ -42,28 +42,22 @@ class SavePipeline:
                                 VALUES (%s, %s, %s)", (item["Id"], item["name"], item["url"]))
                 conn.commit()
             except Exception as Err:
-                logger.warning(Err, item)
+                # logger.warning(Err, item)
+                pass
 
         elif item["dealwith"] == "Item":
             try:
-                # Insert
-                # print(item)
-                
                 cursor.execute("REPLACE INTO dangdang_sport_item (id, title, url, price, hot_word, brand)\
                     VALUES (%s, %s, %s, %s, %s, %s)", (item['brand'], item['title'], item['url'], item['price'], item['hot_word'], item['from']))
                 conn.commit()
-                pass
             except Exception as Err:
                 logger.warning(Err, item)
 
         elif item["dealwith"] == "Detail":
-            # Todo 将item存入数据库
             try:
-                # update
                 cursor.execute("REPlACE INTO dangdang_sport_item_detail (page_url, img_urls, category, score, comments, comment_tag)\
                     VALUES (%s, %s, %s, %s, %s, %s)", (item['page_url'], str(item['img_urls']), item['category'], item['score'], item['comments'], item['comment_tag']))
-
-                pass
+                conn.commit()
             except Exception as Err:
                 logger.warning(Err, item)
             pass
