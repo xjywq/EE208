@@ -1,0 +1,12 @@
+# python文件
+__pycache__/
+
+# 过滤log文件
+*.log
+
+# 过滤container文件
+.devcontainer
+Dockerfile
+
+# 其他文件
+final_result.txt
