@@ -1,8 +1,18 @@
-from flask_wtf import FlaskForm
-from wtforms import StringField, SubmitField
-from wtforms.validators import Required
+from flask import Flask, render_template, request
+from wtforms.fields import simple
+from wtforms import Form
+from wtforms import validators
+from wtforms import widgets
 
 
-class SearchForm(FlaskForm):
-    searchCommand = StringField('What do you want to search?', validators=[Required()])
-    submit = SubmitField('Submit')
+app = Flask(__name__, template_folder="templates")
+
+
+class SearchForm(Form):
+    content = simple.StringField(
+        label="搜索内容",
+        widget=widgets.TextInput(),
+        validators=[
+            validators.DataRequired(message="请输入搜索内容")],
+        render_kw={"class": "form-control"}  # 设置属性生成的html属性
+    )

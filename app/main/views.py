@@ -10,15 +10,28 @@ from ..models import SportItem
 
 @main.route('/', methods=['GET', 'POST'])
 def index():
-    form = SearchForm()
-    if request.method == "POST":
-        command = request.form['command']
-        return redirect(url_for('result', command=command))
-    return render_template('index.html')
+    if request.method == "GET":
+        form = SearchForm()
+        return render_template("index.html", form=form)
+    else:
+        form = SearchForm(formdata=request.form)
+        if form.validate():  # 对用户提交数据进行校验，form.data是校验完成后的数据字典
+            print("用户提交的数据用过格式验证，值为：%s" % form.data)
+            return "登录成功"
+        else:
+            print(form.errors, "错误信息")
+        return render_template("index.html", form=form)
 
 
-@main.route('/result', methods=['GET'])
+@main.route('/result', methods=['POST'])
 def result():
-    command = request.args.get('command')
-    search_res = SportItem.query.filter_by(id=int(command)).first()
-    return render_template('result.html', res=search_res)
+    form = SearchForm(formdata=request.form)
+    if form.validate():  # 对用户提交数据进行校验，form.data是校验完成后的数据字典
+        print("用户提交的数据用过格式验证，值为：{}".format(form.data))
+        command = form.data["content"]
+        # Todo search
+        search_res = SportItem.query.filter_by(id=int(command)).first()
+        return render_template('result.html', res=search_res)
+    else:
+        print(form.errors, "错误信息")
+    return render_template("index.html", form=form)

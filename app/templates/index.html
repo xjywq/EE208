@@ -1,10 +1,8 @@
-{% extends "base.html" %}
-{% block title %}Sportee Search - Search{% endblock %}
-
+{% extends "base.html" %} {% block title %}Sportee Search - Search{% endblock %}
 {% block page_content %}
-<form action="result">
-    <label>Search:</label>
-    <input type="command" name="command"><br>
-    <input type="submit" name="">
+<form method="post"  action="result">
+  <!--<input type="text" name="name">-->
+  <p>{{form.content.label}} {{form.content}} {{form.content.errors[0] }}</p>
+  <input type="submit" value="提交" />
 </form>
 {% endblock %}

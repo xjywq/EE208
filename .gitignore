@@ -1,5 +1,5 @@
 # python文件
-__pycache__/
+*__pycache__/
 
 # 过滤log文件
 *.log
@@ -10,3 +10,6 @@ Dockerfile
 
 # 其他文件
 final_result.txt
+
+# DangDang爬虫序列
+DangDang/dang_1/
