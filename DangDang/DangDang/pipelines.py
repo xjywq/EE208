@@ -48,7 +48,7 @@ class SavePipeline:
 
         elif item["dealwith"] == "Item":
             try:
-                cursor.execute("REPLACE INTO dangdang_sport_item (id, title, url, price, hot_word, brand)\
+                cursor.execute("REPLACE INTO DD_PE_item (id, Name, url, price, hotword, brand)\
                     VALUES (%s, %s, %s, %s, %s, %s)", (item['brand'], item['title'], item['url'], item['price'], item['hot_word'], item['from']))
                 conn.commit()
                 # print("upload item of :  " , item["title"])
@@ -58,8 +58,8 @@ class SavePipeline:
 
         elif item["dealwith"] == "Detail":
             try:
-                cursor.execute("REPLACE INTO dangdang_sport_item_detail (page_url, img_urls, category, score, comments, comment_tag)\
-                    VALUES (%s, %s, %s, %s, %s, %s)", (item['page_url'], str(item['img_urls']), item['category'], item['score'], item['comments'], item['comment_tag']))
+                cursor.execute("UPDATE DD_PE_item SET (image_url, category, score, comment, comment_tag) = \
+                    (%s, %s, %s, %s, %s, %s) WHERE url = %s" , (str(item['img_urls']), item['category'], item['score'], item['comments'], item['comment_tag'], item['page_url']))
                 conn.commit()
                 # print("upload detail of :  " , item["category"])
             except Exception as Err:
