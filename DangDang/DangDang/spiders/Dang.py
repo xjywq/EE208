@@ -10,12 +10,13 @@ logger = logging.getLogger(__name__)
 class DangSpider(scrapy.Spider):
     name = 'Dang'  # 爬虫名
     allowed_domains = ['dangdang.com']  # 允许域
-    start_urls = ['http://category.dangdang.com/cid4002378.html']  # 开始链接
+    start_urls = ['http://category.dangdang.com/cid4003819.html']  # 开始链接
+    # start_urls = ['http://category.dangdang.com/cid4002378.html']
 
     def parse(self, response):
         # 处理start_url
         print("start DangDang project from: ", self.start_urls)
-        item_list = response.xpath('//li[@dd_name="品牌"]//span')
+        item_list = response.xpath('//li[@dd_name="品牌"]//li')
         for _item in item_list:
             item = {}
             item["dealwith"] = "Category"
@@ -28,27 +29,26 @@ class DangSpider(scrapy.Spider):
             yield scrapy.Request(
                 item["url"],
                 callback=self.Categoryparse,
-                # meta={'proxy': "http://" + random.choice(PROXIES)['ip_port']}
+                meta = {'from': item['name'], 'id': item["Id"]}
             )
 
     def Categoryparse(self, response):
         # 处理分类页面
         # print("Call for category spider")
         li_list = response.xpath('//div[@dd_name="普通商品区域"]//li[@ddt-pit]')
-        From = response.xpath(
-            '//*[@id="breadcrumb"]/div/div[2]/span[2]/@title').extract_first()  # 这件商品的来源品牌
         for li in li_list:
             item = {}
             item["dealwith"] = "Item"
             item["title"] = li.xpath('./a/@title').extract_first()
             item["url"] = li.xpath('./a/@href').extract_first()
-            item['id'] = item['url'][-15:-5]
+            item['id'] = item['url'][28:-5]
             item["price"] = li.xpath(
                 './p[@class="price"]/span/text()').extract_first()
             item['price'] = str(float(item["price"][1:]))
             item["hot_word"] = li.xpath(
                 './p[@class="search_hot_word"]/text()').extract_first()
-            item["from"] = From
+            item["from"] = response.meta['from']
+            item['brand'] = response.meta['id']
             yield item
             yield scrapy.Request(
                 item["url"],
@@ -121,7 +121,7 @@ class DangSpider(scrapy.Spider):
             item['comment'] = lists
         except Exception as Err:
             logger.error(Err)
-            logger.error(item)
+            logger.error(item['id'], item['url'])
             item['comment'] = defaultcomment
 
         yield item

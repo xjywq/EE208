@@ -18,26 +18,27 @@ logger = logging.getLogger(__name__)
 
 conn = pymysql.connect(host=pd['host'], port=3306, user=pd['user'],
                        passwd=pd['passwd'], db='Goods', charset="utf8mb4")
-cursor = conn.cursor()
+
 
 Category = {}  # 暂存品牌
 
 
 class ProcessPipeline:
     def process_item(self, item, spider):
-        if item["dealwith"] == "Category":
-            Category[item["name"]] = item["Id"]
+        # if item["dealwith"] == "Category":
+        #     Category[item["name"]] = item["Id"]
 
-        elif item["dealwith"] == "Item":
-            item["brand"] = Category[item["from"]]
-            # brand is an id number
-
+        # elif item["dealwith"] == "Item":
+        #     item["brand"] = Category[item["from"]]
+        #     # brand is an id number
+        pass
         return item
 
 
 class SavePipeline:
 
     def process_item(self, item, spider):
+        cursor = conn.cursor()
         if item["dealwith"] == "Category":
             try:
                 cursor.execute("REPLACE INTO dangdang_sport (Id, Name, url) \

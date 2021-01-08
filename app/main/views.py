@@ -1,5 +1,5 @@
 from flask import render_template, session, redirect, url_for, request
-
+import json
 
 from . import main
 from .forms import SearchForm
@@ -35,3 +35,13 @@ def result():
     else:
         print(form.errors, "错误信息")
     return render_template("index.html", form=form)
+
+@main.route('/item', methods=["GET"])
+def item():
+    item_id = request.args.get('id')
+    item_detail = SportItem.query.filter_by(id=int(item_id)).first()
+    item_detail.image_url = json.loads(item_detail.image_url)
+    print(item_detail.image_url)
+    # Todo search
+    recommand = [item_detail] * 20
+    return render_template("item.html", item=item_detail, recommand=recommand)

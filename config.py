@@ -1,5 +1,5 @@
 import os
-from password import SQLALCHEMY_DATABASE_URI as SQ
+from app.password import SQLALCHEMY_DATABASE_URI as SQ
 basedir = os.path.abspath(os.path.dirname(__file__))
 
 
