@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+<style>
+  .row .left_bar{
+    border-color: black;
+    position: absolute;
+    background: scroll;
+    background-image: url("../static/icon.png");
+  }
+</style>
+{% block title %}Sportee Search - Search{% endblock %}
+{% block page_content %}
+<div class="row">
+  	<div class="col-md-4 col-lg-3" >
+      	<img src="../static/icon.png" alt="icon" width="160" height="166">
+  	</div>
+
+  	<div class="col-md-8 col-lg-9" >
+    	<form method="post"  action="result">
+      	<!--<input type="text" name="name">-->
+      	<p>{{form.content.label}} {{form.content}} {{ form.content.errors[0] }}</p>
+      	<input type="submit" class="btn btn-primary" value="提交"/>
+    	</form>
+  	</div>
+</div>
+    <hr>
+<div class="row">
+    <div class="col-md-3 col-lg-3 left_bar">
+        <ul>
+            <li>运动服饰</li>
+            <li>化妆品</li>
+        </ul>
+    </div>
+    <div class="col-md-6 col-lg-6">
+        幻灯片素材
+    </div>
+    <div class="col-md-3 col-lg-3">
+        广告区
+    </div>
+</div>
+    
+</div>
+
+{% endblock %}
