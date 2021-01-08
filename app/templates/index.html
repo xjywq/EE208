@@ -1,33 +1,63 @@
 {% extends "base.html" %}
-<style>
-  .row .left_bar{
-    border-color: black;
-    position: absolute;
-    background: scroll;
-    background-image: url("../static/icon.png");
-  }
+<style >
+    .row .left_bar{
+      border-color: black !important;
+      position: absolute;
+      background: scroll;
+      background-color: antiquewhite !important;
+    }
+    .search .form-group {
+          position: relative !important;
+          top: 30px !important;
+      }
+    .search .dropdown-menu{
+        background-color: chocolate !important;
+        border: 0ch !important;
+    }
 </style>
 {% block title %}Sportee Search - Search{% endblock %}
+
 {% block page_content %}
 <div class="row">
   	<div class="col-md-4 col-lg-3" >
       	<img src="../static/icon.png" alt="icon" width="160" height="166">
   	</div>
 
-  	<div class="col-md-8 col-lg-9" >
-    	<form method="post"  action="result">
-      	<!--<input type="text" name="name">-->
+  	<div class="col-md-8 col-lg-9 search" >
+    	<!-- <form method="post"  action="result">
+      	<input type="text" name="name"
       	<p>{{form.content.label}} {{form.content}} {{ form.content.errors[0] }}</p>
       	<input type="submit" class="btn btn-primary" value="提交"/>
-    	</form>
+        </form> -->
+        <div class="form-group">
+            <form action="result" method="POST">
+                <label for="name">&nbsp;>>&nbsp;开始搜索</label>
+                <input type="search" class="form-control" placeholder="请输入你想搜索的关键词···" name="keyword">
+                <div class="btn-group">
+                    <button type="submit" class="btn btn-primary" value="SearchPage" name="searchType">搜索</button>
+                    <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
+                        <span class="caret"></span>
+
+                    </button>
+                    <ul class="dropdown-menu" role="menu">
+                        <li><button type="submit" value="SearchPage" class="btn btn-primary" name="searchType">搜网页</button></li>
+                        <li><button type="submit" value="SearchImage" class="btn btn-primary" name="searchType">搜图像</button></li>
+                        <!-- <li><a href="#">其他</a></li> -->
+                    </ul>
+                </div>
+                <!-- <button type="submit" value="Search" class="btn btn-primary">搜索</button> -->
+            </form>
+          </div>
   	</div>
 </div>
     <hr>
 <div class="row">
-    <div class="col-md-3 col-lg-3 left_bar">
+    <div class="col-md-3 col-lg-3 left_bar" style="background-color: blanchedalmond;">
         <ul>
-            <li>运动服饰</li>
-            <li>化妆品</li>
+            
+            <li>Nike</li>
+            <li>Adidas</li>
+            <li>斯凯奇</li>
         </ul>
     </div>
     <div class="col-md-6 col-lg-6">
