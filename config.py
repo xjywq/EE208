@@ -1,4 +1,5 @@
 import os
+from password import SQLALCHEMY_DATABASE_URI as SQ
 basedir = os.path.abspath(os.path.dirname(__file__))
 
 
@@ -13,7 +14,7 @@ class Config:
 
 
 class ProductionConfig(Config):
-    SQLALCHEMY_DATABASE_URI = 'mysql+pymysql://root:Zrh999999@121.199.77.180:3306/Goods'
+    SQLALCHEMY_DATABASE_URI = SQ
 
 
 config = {

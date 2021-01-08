@@ -10,12 +10,13 @@
 
 import pymysql
 import logging
+from password import onlinepassword as pd
 
 logging_FORMAT = "%(asctime)s - %(levelname)s - %(message)s"
 logging.basicConfig(filename='concat.log', level=logging.DEBUG, format=logging_FORMAT)
 
-conn = pymysql.connect(host='121.199.77.180', port=3306, user='root',
-                       passwd='Zrh999999', db='Goods', charset="utf8mb4")
+conn = pymysql.connect(host=pd['host'], port=3306, user=pd['user'],
+                       passwd=pd['passwd'], db='Goods', charset="utf8mb4")
 cursor = conn.cursor()
 
 cursor.execute("SELECT * FROM Goods.dangdang_sport_item_detail")
