@@ -1,22 +1,44 @@
 import json
 import logging
 import random
+from copy import deepcopy
 
 import scrapy
+from lxml import etree
 
 logger = logging.getLogger(__name__)
+
+
+def extract_comment(string):
+    tree = etree.HTML(string)
+    default_user = '无昵称用户'
+    default_user_img = 'http://img7x0.ddimg.cn/imghead/56/18/4158746086430-1_o.png'
+    comment_text_li = [comment.replace('\n', '').strip() for comment in tree.xpath(
+        '//div[@class="describe_detail"]/span/text()')]
+    comment_user_li = [user.replace('\n', '').strip() for user in tree.xpath(
+        '//div[@class="items_left_pic"]/a/span[@class="name"]/text()')]
+    comment_user_img_li = [img.replace('\\', '') for img in tree.xpath(
+        '//div[@class="items_left_pic"]/a/img/@src')]
+    comment_infos = []
+    while len(comment_user_li) < len(comment_text_li):
+        comment_user_li.append(default_user)
+        comment_user_img_li.append(default_user_img)
+    for index, item in enumerate(comment_text_li):
+        comment_infos.append(
+            (item, comment_user_li[index], comment_user_img_li[index]))
+    return comment_infos
 
 
 class DangSpider(scrapy.Spider):
     name = 'Dang'  # 爬虫名
     allowed_domains = ['dangdang.com']  # 允许域
-    start_urls = ['http://category.dangdang.com/cid4003819.html']  # 开始链接
-    # start_urls = ['http://category.dangdang.com/cid4002378.html']
+    # start_urls = ['http://category.dangdang.com/cid4003819.html']  # 开始链接
+    start_urls = ['http://category.dangdang.com/cid4002378.html']
 
     def parse(self, response):
         # 处理start_url
         print("start DangDang project from: ", self.start_urls)
-        item_list = response.xpath('//li[@dd_name="品牌"]//li')
+        item_list = response.xpath('//li[@dd_name="品牌"]//span')
         for _item in item_list:
             item = {}
             item["dealwith"] = "Category"
@@ -29,7 +51,7 @@ class DangSpider(scrapy.Spider):
             yield scrapy.Request(
                 item["url"],
                 callback=self.Categoryparse,
-                meta = {'from': item['name'], 'id': item["Id"]}
+                meta={'item': deepcopy(item)}
             )
 
     def Categoryparse(self, response):
@@ -47,13 +69,19 @@ class DangSpider(scrapy.Spider):
             item['price'] = str(float(item["price"][1:]))
             item["hot_word"] = li.xpath(
                 './p[@class="search_hot_word"]/text()').extract_first()
-            item["from"] = response.meta['from']
-            item['brand'] = response.meta['id']
+            try:
+                item['brand'] = response.meta['item']['Id']
+                item['from'] = response.meta['item']['name']
+            except KeyError:
+                item['brand'] = '0'
+                item['from'] = '暂无'
+                logger.error(response.meta)
+                logger.error(item)
             yield item
             yield scrapy.Request(
                 item["url"],
                 callback=self.Itemparse,
-                meta={'item': item}
+                meta={'item': deepcopy(item)}
             )
         next_url = response.xpath('//li[@class="next"]')
         if next_url:
@@ -90,7 +118,7 @@ class DangSpider(scrapy.Spider):
             item['score'] = "0"
         # TODO the comment of this item is placed by Ajax, namely the js script, which is hard to extract
         # TODO A big problem
-        item['comments'] = str({})
+        item['comments'] = str([])
         item['comment_tag'] = str([])
 
         item_comment_url = 'http://product.dangdang.com/index.php?r=comment%2Flist&productId=' + \
@@ -98,7 +126,7 @@ class DangSpider(scrapy.Spider):
         yield scrapy.Request(
             item_comment_url,
             callback=self.Commentparse,
-            meta={'item': item}
+            meta={'item': deepcopy(item)}
         )
 
         item_comment_tag_url = 'http://product.dangdang.com/index.php?r=comment%2Flabel&productId=' + \
@@ -106,7 +134,7 @@ class DangSpider(scrapy.Spider):
         yield scrapy.Request(
             item_comment_tag_url,
             callback=self.CommentHeadparse,
-            meta={'item': item}
+            meta={'item': deepcopy(item)}
         )
 
         yield item
@@ -115,14 +143,19 @@ class DangSpider(scrapy.Spider):
         # 处理商品评论
         item = response.meta['item']
         item["dealwith"] = "comment"
-        defaultcomment = {"summary": {"main_product_id": item["id"], "long_comment_count": "0", "pageCount": "0", "pageIndex": "1"}, "html": "\n    \n        <div class=\"item_wrap\">\n           <div class=\"comment_items comment_items_none\" style=\"border-top: none\">\n               <i class=\"icon\"></i>暂无长评\n           </div>\n        </div>\n   "}
         try:
             lists = json.loads(response.text)['data']['list']
-            item['comment'] = lists
+            item['comment_num'] = [int(lists['summary']['total_comment_num']), int(lists['summary']['total_score_count']), int(lists['summary']['total_crazy_count']), int(
+                lists['summary']['total_indifferent_count']), int(lists['summary']['total_detest_count']), float(lists['summary']['goodRate'])]
+            if int(lists['summary']['total_comment_num']) >= 1:
+                item['comment'] = extract_comment(lists['html'])
+            else:
+                item['comment'] = []
         except Exception as Err:
             logger.error(Err)
-            logger.error(item['id'], item['url'])
-            item['comment'] = defaultcomment
+            logger.error(item['id'])
+            item['comment'] = []
+            item['comment_num'] = [0, 0, 0, 0, 0, 0]
 
         yield item
 

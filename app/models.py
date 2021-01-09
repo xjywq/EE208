@@ -16,4 +16,5 @@ class SportItem(db.Model):
     price = db.Column(db.Float, doc='商品价格', nullable=False)
     comment = db.Column(db.String, doc='商品评论', nullable=False)
     comment_tag = db.Column(db.String, doc='商品评论标签', nullable=False)
+    comment_num = db.Column(db.String, doc='商品评论数量', nullable=False)
     hotword = db.Column(db.String, doc='商品热词', nullable=False)

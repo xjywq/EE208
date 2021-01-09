@@ -30,7 +30,7 @@ class ProcessPipeline:
 
         # elif item["dealwith"] == "Item":
         #     item["brand"] = Category[item["from"]]
-        #     # brand is an id number
+        # brand is an id number
         pass
         return item
 
@@ -44,40 +44,53 @@ class SavePipeline:
                 cursor.execute("REPLACE INTO dangdang_sport (Id, Name, url) \
                                 VALUES (%s, %s, %s)", (item["Id"], item["name"], item["url"]))
                 conn.commit()
-                # print("upload category of :  " , item["name"])
+                print("upload category of :  ", item["name"])
+
             except Exception as Err:
                 logger.error(Err)
                 logger.error(item)
 
         elif item["dealwith"] == "Item":
             try:
-                cursor.execute('REPLACE INTO DD_PE_item (id, Name, url, price, hotword, brand, brand_id)\
+                cursor.execute('REPLACE INTO DD_PE_item_test (id, Name, url, price, hotword, brand, brand_id)\
                     VALUES (%s, %s, %s, %s, %s, %s, %s)', (item['id'], item['title'], item['url'], item['price'], item['hot_word'], item['from'], item['brand']))
                 conn.commit()
-                # print("upload item of :  " , item["title"])
+                print("upload item of :  ", item["title"])
+
             except Exception as Err:
                 logger.error(Err)
                 logger.error(item)
 
         elif item["dealwith"] == "Detail":
             try:
-                cursor.execute("UPDATE `DD_PE_item` SET `image_url` = \
+                cursor.execute("UPDATE `DD_PE_item_test` SET `image_url` = \
                     \'{}\' WHERE `id` = {}".format(json.dumps(item['img_urls']), item['id']))
-                cursor.execute("UPDATE `DD_PE_item` SET `score` = \
+                cursor.execute("UPDATE `DD_PE_item_test` SET `score` = \
                     \'{}\' WHERE `id` = {}".format(item['score'], item['id']))
-                cursor.execute("UPDATE `DD_PE_item` SET `category` = \
+                cursor.execute("UPDATE `DD_PE_item_test` SET `category` = \
                     \'{}\' WHERE `id` = {}".format(item['category'], item['id']))
                 conn.commit()
-                # print("upload detail of :  " , item["category"])
+                print("upload detail of :  ", item["title"])
+
             except Exception as Err:
                 logger.error(Err)
                 logger.error(item)
 
         elif item["dealwith"] == "comment":
             try:
-                cursor.execute("UPDATE `DD_PE_item` SET `comment` = \
-                    \'{}\' WHERE `id` = {}".format(json.dumps(item['comment']), item['id']))
-                conn.commit()
+                if item['comment_num'][0] > 0:
+                    cursor.execute("UPDATE `DD_PE_item_test` SET `comment` = \
+                        \'{}\' WHERE `id` = {}".format(json.dumps(item['comment']), item['id']))
+                    cursor.execute("UPDATE `DD_PE_item_test` SET `comment_num` = \
+                        \'{}\' WHERE `id` = {}".format(json.dumps(item['comment_num']), item['id']))
+                    conn.commit()
+                else:
+                    cursor.execute("UPDATE `DD_PE_item_test` SET `comment` = \
+                        \'[]\' WHERE `id` = {}".format(item['id']))
+                    cursor.execute("UPDATE `DD_PE_item_test` SET `comment_num` = \
+                        \'[0, 0, 0, 0, 0, 0]\' WHERE `id` = {}".format(item['id']))
+                    conn.commit()
+                print("upload comment of :  ", item["title"])
 
             except Exception as Err:
                 logger.error(Err)
@@ -85,9 +98,15 @@ class SavePipeline:
 
         elif item["dealwith"] == "comment_tag":
             try:
-                cursor.execute("UPDATE `DD_PE_item` SET `comment_tag` = \
-                    \'{}\' WHERE `id` = {}".format(json.dumps(item['comment_tag']), item['id']))
-                conn.commit()
+                if item['comment_tag']:
+                    cursor.execute("UPDATE `DD_PE_item_test` SET `comment_tag` = \
+                        \'{}\' WHERE `id` = {}".format(json.dumps(item['comment_tag']), item['id']))
+                    conn.commit()
+                else:
+                    cursor.execute("UPDATE `DD_PE_item_test` SET `comment_tag` = \
+                        \'[]\' WHERE `id` = {}".format(item['id']))
+                    conn.commit()
+                print("upload comment tag of :  ", item["title"])
 
             except Exception as Err:
                 logger.error(Err)
