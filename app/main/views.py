@@ -2,15 +2,16 @@ import json
 
 from flask import Flask, redirect, render_template, request, session, url_for
 
-from .WordCloud import cut_comment_seg, wordcloud_base
 from .. import db
 from ..models import SportItem
 from . import main
 from .EE208_ES_FP_class import ES_FP_search
 from .forms import SearchForm
+from .WordCloud import cut_comment_seg, wordcloud_base
+
+from flask_paginate import Pagination, get_page_parameter
 
 app = Flask(__name__)
-
 
 @main.route('/', methods=['GET', 'POST'])
 def index():
@@ -18,6 +19,7 @@ def index():
         form = SearchForm()
         return render_template("index.html", form=form)
     else:
+        
         form = SearchForm(formdata=request.form)
         if form.validate():  # 对用户提交数据进行校验，form.data是校验完成后的数据字典
             print("用户提交的数据用过格式验证，值为：%s" % form.data)
@@ -35,7 +37,17 @@ def result():
         command = form.data["content"]
         # Todo search
         search_res = SportItem.query.filter_by(id=int(command)).first()
-        return render_template('result.html', res=search_res)
+        # 我们认为search_res是一个数组，首先统计一下，然后下载pagination
+        found = len(search_res)
+        page = request.args.get(get_page_parameter(), type=int, default=1)
+        
+        per_page = int(request.args.get('per_page', default = 40)) # 这样可以整除
+        # 要传进template的代码
+        res = [single for single in search_res[(page - 1) * per_page, page * per_page]]
+        res = [[each for each in res[i * 4, i * 4 + 4]] for i in range(per_page / 4)]
+        
+        pagination = Pagination(found = found, page = page, search = True, total = found, per_page = per_page)
+        return render_template('result.html', res=res, keyword = form.data, pagenation = pagination)
     else:
         print(form.errors, "错误信息")
     return render_template("index.html", form=form)
@@ -90,3 +102,4 @@ def item():
 def get_wordcloud_chart():
     c = wordcloud_base()
     return c.dump_options_with_quotes()
+        
