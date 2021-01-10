@@ -1,14 +1,19 @@
+import os
+
+
+
 from flask import Flask, render_template, request
 from wtforms.fields import simple
 from wtforms import Form
 from wtforms import validators
-from wtforms import widgets
+from wtforms import widgets, SubmitField
 from flask_wtf import FlaskForm
-from flask_uploads import UploadSet, IMAGES
+from flask_uploads import UploadSet, IMAGES, configure_uploads
 from flask_wtf.file import FileAllowed, FileRequired, FileField
 
 
 images = UploadSet('images', IMAGES)
+
 class SearchForm(Form):
     content = simple.StringField(
         label="",
@@ -23,3 +28,4 @@ class UploadForm(FlaskForm):
         label="",
         validators=[FileRequired(), FileAllowed(images, "Image only!")]
     )
+    submit = SubmitField(u'上传')
