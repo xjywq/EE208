@@ -6,7 +6,7 @@ from wtforms import widgets
 from flask_wtf import FlaskForm
 from flask_uploads import UploadSet, IMAGES
 from flask_wtf.file import FileAllowed, FileRequired, FileField
-app = Flask(__name__, template_folder="templates")
+
 
 images = UploadSet('images', IMAGES)
 class SearchForm(Form):

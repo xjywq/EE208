@@ -239,21 +239,18 @@ def item():
     brand_res = es_fp.ES_keywords("brand", item_item.brand)[:6]
     brand_res = brand_res + [{'id': 0, 'title': '商品示例', 'url': '/', 'image_url': ['http://img3m9.ddimg.cn/74/17/1338216239-1_u_8.jpg'],
                               'keywords': [], 'brand': '暂无', 'brand_id': 0, 'score': 0, 'price': 0, 'hotword': ''}] * (6-len(brand_res))
-    es_fp = ES_FP_search()
     search_res = es_fp.ES_keywords("title", item_item.Name)[1:7]
     search_res = search_res + [{'id': 0, 'title': '商品示例', 'url': '/', 'image_url': ['http://img3m9.ddimg.cn/74/17/1338216239-1_u_8.jpg'],
                                 'keywords': [], 'brand': '暂无', 'brand_id': 0, 'score': 0, 'price': 0, 'hotword': ''}] * (6-len(search_res))
     recommand = [search_res, brand_res]
-
-    # WordCloud
-    c = wordcloud_base()
-    c.dump_options_with_quotes()
 
     return render_template("item.html", item_detail=item_detail, recommand=recommand, item=item_item)
 
 
 @main.route("/wordcloudChart")
 def get_wordcloud_chart():
-    c = wordcloud_base()
+    id = request.args.get('id')
+    id = int(id)
+    c = wordcloud_base(id)
     return c.dump_options_with_quotes()
         
