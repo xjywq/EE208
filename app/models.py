@@ -3,7 +3,7 @@ import json
 
 
 class SportItem(db.Model):
-    __tablename__ = 'DD_PE_item'
+    __tablename__ = 'DD_PE_item_test'
     __table_args__ = {'mysql_engine': 'InnoDB'}
     id = db.Column(db.Integer, doc="商品ID", primary_key=True)
     Name = db.Column(db.String, doc="商品名", primary_key=False)

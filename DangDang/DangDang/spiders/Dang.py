@@ -32,8 +32,8 @@ def extract_comment(string):
 class DangSpider(scrapy.Spider):
     name = 'Dang'  # 爬虫名
     allowed_domains = ['dangdang.com']  # 允许域
-    # start_urls = ['http://category.dangdang.com/cid4003819.html']  # 开始链接
-    start_urls = ['http://category.dangdang.com/cid4002378.html']
+    # start_urls = ['http://category.dangdang.com/cid4003819.html']  # 电子产品
+    start_urls = ['http://category.dangdang.com/cid4002378.html'] # 运动服饰
 
     def parse(self, response):
         # 处理start_url
