@@ -1,64 +1,93 @@
 {% extends "base.html" %}
-<style >
-    .row .left_bar{
-      border-color: black !important;
-      position: absolute;
-      background: scroll;
-      background-color: antiquewhite !important;
-    }
-    .search .form-group {
-          position: relative !important;
-          top: 30px !important;
-      }
-    .search .dropdown-menu{
-        background-color: chocolate !important;
-        border: 0ch !important;
-    }
-</style>
+
 {% block title %}Sportee Search - Search{% endblock %}
 
 {% block page_content %}
+
 <div class="row">
-  	<div class="col-md-4 col-lg-3" >
-      	<img src="../static/icon.png" alt="icon" width="160" height="166">
-  	</div>
-
-  	<div class="col-md-8 col-lg-9 search" >
-    	<!-- <form method="post"  action="result">
-      	<input type="text" name="name"
-      	<p>{{form.content.label}} {{form.content}} {{ form.content.errors[0] }}</p>
-      	<input type="submit" class="btn btn-primary" value="提交"/>
-        </form> -->
-        <div class="form-group">
-            <form action="result" method="POST">
-                <label for="name">&nbsp;>>&nbsp;开始搜索</label>
-                <input type="search" class="form-control" placeholder="请输入你想搜索的关键词···" name="keyword">
-                <div class="btn-group">
-                    <button type="submit" class="btn btn-primary" value="SearchPage" name="searchType">搜索</button>
-                    <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
-                        <span class="caret"></span>
-
-                    </button>
-                    <ul class="dropdown-menu" role="menu">
-                        <li><button type="submit" value="SearchPage" class="btn btn-primary" name="searchType">搜网页</button></li>
-                        <li><button type="submit" value="SearchImage" class="btn btn-primary" name="searchType">搜图像</button></li>
-                        <!-- <li><a href="#">其他</a></li> -->
-                    </ul>
-                </div>
-                <!-- <button type="submit" value="Search" class="btn btn-primary">搜索</button> -->
-            </form>
+    <style >
+        .search-icon{
+            border: none;
+            background: none;
+        }
+        #content{
+            width: 80%;
+            display: inline;
+        }
+        .left-bar h3{
+            font-size: large;
+        }
+    </style>
+    
+    <div class="row">
+          <div class="col-md-4 col-lg-3" >
+              <img src="../static/icon.png" alt="icon" width="160" height="166">
           </div>
-  	</div>
-</div>
-    <hr>
-<div class="row">
-    <div class="col-md-3 col-lg-3 left_bar" style="background-color: blanchedalmond;">
-        <ul>
-            
-            <li>Nike</li>
-            <li>Adidas</li>
-            <li>斯凯奇</li>
-        </ul>
+    
+          <div class="col-md-8 col-lg-9" >
+
+                <div class="tabbable" id="tabs-368165">
+                    <ul class="nav nav-tabs">
+                        <li class="active">
+                            <a href="#panel-1" data-toggle="tab">搜宝贝</a>
+
+                        </li>
+                        <li>
+                            <a href="#panel-2" data-toggle="tab">搜品牌</a>
+                        </li>
+                        <li>
+                            <a href="upload">搜图片</a>
+                        </li>
+                    </ul>
+                    <div class="tab-content">
+                        <div class="tab-pane active" id="panel-1">
+                            <form action="result" method="GET">
+                                <div>
+                                {{form.content.label}} {{form.content}} 
+                                <!-- {{ form.content.errors[0] }} -->
+                                <button class="submit search-icon">
+                                    <span class="glyphicon glyphicon-search"></span>
+                                </button>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="tab-pane" id="panel-2">
+                            <form action="brand_result" method="GET">
+                                <div class="search_bar">
+                                    {{form.content.label}} {{form.content}} 
+                                    <!-- {{ form.content.errors[0] }} -->
+                                    <button class="submit search-icon">
+                                        <span class="glyphicon glyphicon-search"></span>
+                                    </button>
+                                </div>
+                                
+                            </form>
+                        </div>
+                        
+                    </div>
+                </div>
+    
+    
+          </div>
+    </div>
+        <hr>
+    <div class="col-md-3 col-lg-3 left_bar">
+        <h3>你可能感兴趣</h3>
+        <div class="list-group">
+
+            <a href="./brand_result?content=耐克" class="list-group-item active">
+                <img src="../static/耐克.png" alt="耐克"><strong>耐克</strong> 
+            </a>
+            <a href="./brand_result?content=adidas" class="list-group-item">
+                <img src="../static/阿迪达斯.png" alt="耐克"><strong>Adidas</strong> 
+            </a>
+            <a href="./brand_result?content=adidas" class="list-group-item">
+                <img src="../static/李宁.png" alt="耐克"><strong>李宁</strong> 
+            </a>
+            <a href="./brand_result?content=adidas" class="list-group-item">
+                <img src="../static/安踏.png" alt="耐克"><strong>安踏</strong> 
+            </a>
+        </div>
     </div>
     <div class="col-md-6 col-lg-6">
         幻灯片素材

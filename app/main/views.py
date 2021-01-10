@@ -1,17 +1,18 @@
-import json
-
-from flask import Flask, redirect, render_template, request, session, url_for
 import os
+import re
+import uuid
+
+from flask import (redirect, render_template, request, send_from_directory,
+                   session, url_for)
+from flask_paginate import Pagination, get_page_parameter
+from werkzeug.datastructures import ImmutableMultiDict
+from .WordCloud import cut_comment_seg, wordcloud_base
 from .. import db
 from ..models import SportItem
 from . import main
 from .EE208_ES_FP_class import ES_FP_search
-from .forms import SearchForm
-from .WordCloud import cut_comment_seg, wordcloud_base
-
-from flask_paginate import Pagination, get_page_parameter
-
-app = Flask(__name__)
+from .forms import SearchForm, UploadForm
+from config import basedir
 
 def query():
     pass

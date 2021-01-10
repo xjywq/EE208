@@ -1,84 +1,91 @@
 {% extends "base.html" %}
-{% block title %}Sportee Search - Search{% endblock %}
-<style>
-    .result {
-        margin-top: auto;
-        margin-bottom: auto;
 
-        padding-top: 10px;
-        padding-bottom: 10px;
-    }
-</style>
+{% block title %}Sportee Search - Result{% endblock %}
+<link rel="stylesheet" href="../static/bootstrap.css">
 {% block page_content %}
-<div class="container">
     
+    <style>
+        .result {
+            margin-top: auto;
+            margin-bottom: auto;
+            margin-left: auto;
+            margin-right: auto;;
+            padding-top: 10px;
+            padding-bottom: 10px;
+            text-align: center;
+            display: block;
+        }
+        .single-item{
+            margin-top: 10px;
+            margin-bottom: 10px;
+            border: 4px;
+            border-color: dimgray;
+            border-style: solid;
+
+
+            /* margin-left: auto;
+            margin-right: auto; */
+        }
+
+        .pic img{
+            height: 360px;
+            width: 360px;
+        }
+        .price p{
+            color: red;
+            font-size: small;
+            display: inline;
+        }
+        #pagination_link{
+            text-align: center;
+            display: block;  
+
+        }
+    </style>
+
     <h1>Result</h1>
     <!-- res pagination keyword -->
-    <div class="row">
-        <h2>Search for {{ keyword }}</h2>
-        <br>
-    </div>
+    {% if keyword  %}
+        <div class="row">
+            <h2>Search for {{ keyword }}</h2>
+            <br>
+        </div>    
+    {% endif %}
+    
+    
     
     <div class="row">
         {{ pagination.info }}
     </div>
     
-    {% for one_row in res %}
-        <div class="row">
-            {% for element in one_row %}
-                <div class="col-xs-6 col-sm-3">
-                    <img src="{{element.image_url}}" alt="运动服饰图片">
-                    <a href="../item?id={{element.id}}">{{element.Name}}</a>
-                    <strong> {{element.price}}</strong>
-                    <span>好评率: {{element.score}}</span>
-                </div>
-            {% endfor %}
-            
-        
-    {% endfor %}
-    
-    <!-- <div class="row">
+    <div class="result">
+        {% for element in res %}
+        {% if loop.index % 2 == 0 %}
+            <div class="col-xs-6 col-sm-6 col-lg-6 single-item" style="border-left: 0ch;">
+        {% else %}
+            <div class="col-xs-6 col-sm-6 col-lg-6 single-item" style="border-right: 0ch;">
+        {% endif %}
 
-        {% for single_res in res[:4] %}
-        <div class="col-xs-6 col-sm-3">
-            <img src="{{ post[1]}}" alt="书籍图片"><br>
-            <a href="{{ post[2]}}" target="_blank">{{ post[0] }}</a>
-        </div>
+            <div class="pic">
+                <a href="../item?id={{element.id}}">
+                    <img src="{{element.image_url|first}}" alt="运动服饰图片"><br>
+                </a><br>
+            </div>
             
+            <a href="../item?id={{element.id}}">{{element.title|safe}}</a><br>
+            <div class="price">
+                <p>￥</p>
+                <strong> {{element.price}} </strong><br>
+            </div>
+            
+            <span>好评率: {{element.rate}}</span>
+        </div>
         {% endfor %}
     </div>
-    <div class="row">
-        {% for post in posts[4:8] %}
-        <div class="col-xs-6 col-sm-3">
-            <img src="{{ post[1]}}" alt="书籍图片"><br>
-            <a href="{{ post[2]}}" target="_blank">{{ post[0] }}</a>
-        </div>
-            
-        {% endfor %}
-    </div>
-    <div class="row">
-        {% for post in posts[8:12] %}
-        <div class="col-xs-6 col-sm-3">
-            <img src="{{ post[1]}}" alt="书籍图片"><br>
-            <a href="{{ post[2]}}" target="_blank">{{ post[0] }}</a>
-        </div>
-            
-        {% endfor %}
-    </div>
-    <div class="row">
-        {% for post in posts[12:16] %}
-        <div class="col-xs-6 col-sm-3">
-            <img src="{{ post[1]}}" alt="书籍图片"><br>
-            <a href="{{ post[2]}}" target="_blank">{{ post[0] }}</a>
-        </div>
-            
-        {% endfor %}
-    </div>
-     -->
     <hr>
-    <div class="row">
+    <div id="pagination_link">
         {{ pagination.links }}
     </div>
 
-</div>
+
 {% endblock %}
