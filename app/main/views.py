@@ -232,14 +232,13 @@ def img_result():
     filename = request.args.get('filename')
     UPLOAD_FOLDER = os.path.join(os.getcwd(), 'app', 'upload')
     filepath = os.path.join(UPLOAD_FOLDER, filename)
-    print(filepath)
-    print('____________________________')
+
     page = request.args.get(get_page_parameter(), type=int, default=1)
     per_page = int(request.args.get('per_page', default = 20)) # 这样可以整除
     all_id = query(filepath)
 
-    search_res = [SportItem.query.filter_by(id=i).first() for i in all_id]
-    res = [single for single in search_res[(page - 1) * per_page: page * per_page]]
-    found = len(search_res)
+    res = [SportItem.query.filter_by(id=i).first() for i in all_id[(page - 1) * per_page: page * per_page]]
+
+    found = len(res)
     pagination = Pagination(found = found, page = page, search = True, total = found, per_page = per_page, bs_version=4)
     return render_template('result.html', res=res, keyword = "", pagination = pagination)
