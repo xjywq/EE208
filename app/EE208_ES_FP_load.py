@@ -130,6 +130,8 @@ result = cursor.fetchall()
 for item in result:
     comment_all = item[9]
     recommend_score = recommend_item(comment_all)
+    cursor.execute("UPDATE DD_PE_item_test SET `score` = %s WHERE `id` = %s", (recommend_score*100, item[0]))
+    database.commit()
     comment_keywords = cut_comment_seg(comment_all)
     if item[11] == None:
         hotword = 'None'
