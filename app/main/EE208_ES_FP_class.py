@@ -157,10 +157,10 @@ class ES_FP_search():
             dic = entry['_source']
             dic['image_url'] = entry['_source']['image_url'].split('#')
             dic['category'] = entry['_source']['category'].replace(u'\xa0', u' ').split('#')
-            if domain in ['image_url','category']:
-                dic['{}'.format(domain)] = entry['highlight']['{}'.format(domain)][0].replace(u'\xa0', u' ').split('#')
+            if domain1 in ['image_url','category']:
+                dic['{}'.format(domain1)] = entry['highlight']['{}'.format(domain1)][0].replace(u'\xa0', u' ').split('#')
             else:
-                dic['{}'.format(domain)] = entry['highlight']['{}'.format(domain)][0]
+                dic['{}'.format(domain1)] = entry['highlight']['{}'.format(domain1)][0]
             result.append(dic)
         return result
 

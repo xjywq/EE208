@@ -3,11 +3,184 @@
 {% block title %}Sportee Search - Search{% endblock %}
 
 {% block page_content %}
+<style>
+    /* ==================================================
+  Hero Styling
+================================================== */
 
+    .bttn {
+        background-color: #199eb8;
+        font-family: "microsoft yahei", Arial, sans-serif;
+        font-weight: 800;
+        color: #fff;
+        padding: 15px 45px;
+        border-radius: 50px;
+    }
+
+    .bttn:hover {
+        background-color: #e04f00;
+        color: #fff;
+    }
+
+    .bttn:focus {
+        color: #fff;
+    }
+
+    .hero {
+        display: table;
+        position: relative;
+        background-image: url(../static/parallax-bg.jpg);
+        background-size: cover;
+        padding: 15px 0;
+        color: #fff;
+        width: 100%;
+        height: 100vh;
+        margin-bottom: 200px;
+    }
+
+    .hero:after {
+        content: "";
+        z-index: 0;
+        position: absolute;
+        background: rgba(0, 0, 0, 0.65);
+        width: 100%;
+        height: 100%;
+        left: 0;
+        top: 0;
+    }
+
+    .hero .container {
+        position: relative;
+        z-index: 1;
+        text-align: center;
+        display: table-cell;
+        vertical-align: middle;
+        width: 100%;
+    }
+
+    .hero-brand {
+        margin-bottom: 75px;
+        display: inline-block;
+    }
+
+    .hero-brand:hover {
+        opacity: 0.75;
+    }
+
+    .tagline {
+        font-family: "microsoft yahei", Arial, sans-serif;
+        font-size: 26px;
+        margin: 45px 0 75px 0;
+        color: #fff;
+    }
+
+    /* ==================================================
+  Header Styling
+================================================== */
+    #header {
+        background: #199eb8;
+        height: 70px;
+    }
+
+    #header #logo {
+        margin: 14px 25px 0 0;
+    }
+
+    #header #logo h1 {
+        font-size: 36px;
+        margin: 0;
+        padding: 2px 0;
+        line-height: 1;
+        font-family: "microsoft yahei", Arial, sans-serif;
+        font-weight: 700;
+        letter-spacing: 3px;
+        text-transform: uppercase;
+    }
+
+    #header #logo h1 a,
+    #header #logo h1 a:hover {
+        color: #fff;
+    }
+
+    #header #logo img {
+        padding: 0;
+        margin: 0;
+        max-height: 40px;
+    }
+
+    @media (max-width: 768px) {
+        #header {
+            height: 50px;
+        }
+        #header #logo {
+            margin: 10px 0 0 0;
+        }
+        #header #logo h1 {
+            padding: 2px 0;
+            font-size: 26px;
+        }
+        #header #logo img {
+            max-height: 30px;
+        }
+    }
+
+    #header .social-nav {
+        margin-top: 15px;
+    }
+
+    #header .social-nav a {
+        font-size: 24px;
+        margin-left: 15px;
+        color: #fff;
+    }
+
+    #header .social-nav a:hover {
+        color: rgba(255, 255, 255, 0.75);
+    }
+
+    ul {
+        height: 50px;
+    }
+
+    li {
+        width: 120px;
+        height: 50px;
+        text-align: center;
+        font-size: medium;
+    }
+
+    .input_data input {
+        height: 60px;
+        width: 800px;
+        border-width: 2px;
+    }
+</style>
 <div class="row">
-    <style >
-
-
+    <style>
+        .search-icon {
+            border: none;
+            background: none;
+            width: 40px;
+            height: 40px;
+        }
+        .search-icon span {
+            width: 40px;
+            height: 40px;
+        }
+        .search-icon span ::before {
+            width: 40px;
+            height: 40px;
+        }
+        #content {
+            width: 80%;
+            display: inline;
+        }
+        .left-bar h3 {
+            font-size: large;
+        }
+        .list-group-item {
+            height: 75px;
+        }
     </style>
     
     <div class="row">
@@ -21,6 +194,275 @@
                 <input type=submit value=搜索>
             </form>
         </div>
+    </div>
+</div>
+
+<hr />
+<div class="col-md-3 col-lg-3 left_bar">
+    <h3>这些品牌您可能感兴趣</h3>
+    <div class="list-group">
+        <a href="./brand_result?content=耐克" class="list-group-item">
+            <div class="col-md-6 col-lg-6">
+                <img
+                    src="../static/耐克.png"
+                    alt="耐克"
+                    width="80px"
+                    height="55px"
+                />
+            </div>
+            <div
+                style="font-family: '宋体'; margin-top: 10px"
+                class="col-md-6 col-lg-6"
+            >
+                <font size="5px">耐克</font>
+            </div>
+        </a>
+        <a href="./brand_result?content=adidas" class="list-group-item">
+            <div class="col-md-6 col-lg-6">
+                <img
+                    src="../static/阿迪达斯.png"
+                    alt="阿迪达斯"
+                    width="80px"
+                    height="55px"
+                />
+            </div>
+            <div
+                style="font-family: '宋体'; margin-top: 10px"
+                class="col-md-6 col-lg-6"
+            >
+                <font size="5px">Adidas</font>
+            </div>
+        </a>
+        <a href="./brand_result?content=李宁" class="list-group-item">
+            <div class="col-md-6 col-lg-6">
+                <img
+                    src="../static/李宁.png"
+                    alt="阿迪达斯"
+                    width="80px"
+                    height="55px"
+                />
+            </div>
+            <div
+                style="font-family: '宋体'; margin-top: 10px"
+                class="col-md-6 col-lg-6"
+            >
+                <font size="5px">李宁</font>
+            </div>
+        </a>
+        <a href="./brand_result?content=安踏" class="list-group-item">
+            <div class="col-md-6 col-lg-6">
+                <img
+                    src="../static/安踏.png"
+                    alt="阿迪达斯"
+                    width="80px"
+                    height="55px"
+                />
+            </div>
+            <div
+                style="font-family: '宋体'; margin-top: 10px"
+                class="col-md-6 col-lg-6"
+            >
+                <font size="5px">安踏</font>
+            </div>
+        </a>
+        <a href="./brand_result?content=彪马" class="list-group-item">
+            <div class="col-md-6 col-lg-6">
+                <img
+                    src="../static/puma.png"
+                    alt="阿迪达斯"
+                    width="80px"
+                    height="55px"
+                />
+            </div>
+            <div
+                style="font-family: '宋体'; margin-top: 10px"
+                class="col-md-6 col-lg-6"
+            >
+                <font size="5px">PUMA</font>
+            </div>
+        </a>
+        <a href="./brand_result?content=JOMA" class="list-group-item">
+            <div class="col-md-6 col-lg-6">
+                <img
+                    src="../static/JOMA.jpg"
+                    alt="阿迪达斯"
+                    width="80px"
+                    height="50px"
+                />
+            </div>
+            <div
+                style="font-family: '宋体'; margin-top: 10px"
+                class="col-md-6 col-lg-6"
+            >
+                <font size="5px">JOMA</font>
+            </div>
+        </a>
+    </div>
+</div>
+<div class="col-md-6 col-lg-6">
+    <h3>这些商品您可能感兴趣</h3>
+    <div class="col-md-4 recommand-holder" style="height: 200px">
+        <a href="./item?id=1355471400">
+            <div class="thumbnail" style="height: 250px;">
+                <img
+                    alt="200x200"
+                    src="http://img3m0.ddimg.cn/30/6/1355471400-1_u_10.jpg"
+                    width="100px"
+                    height="100px"
+                />
+                <div class="caption">
+                    <a href="./item?id=1355471400">
+                        【元旦特惠】伯希和 户外抓绒马甲男女
+                        防风保暖抓绒衣加厚开衫抓绒背心</a
+                    >
+                </div>
+                <font color="#FF0000" size="1px"
+                    >满100减30 满200减60 满300减100</font
+                >
+            </div>
+        </a>
+    </div>
+    <div class="col-md-4 recommand-holder" style="height: 250px">
+        <a href="./item?id=1144607625">
+            <div class="thumbnail" style="height: 250px;">
+                <img
+                    alt="200x200"
+                    src="http://img3m5.ddimg.cn/18/8/1144607625-1_u_23.jpg"
+                    width="100px"
+                    height="100px"
+                />
+                <div class="caption">
+                    <a href="./item?id=1144607625">
+                        【元旦特惠】伯希和 儿童冲锋衣 男童女童三合一两件套保暖小孩户外登山服</a
+                    >
+                </div>
+                <font color="#FF0000" size="1px"
+                    >满100减30 满200减60 满300减100</font
+                >
+            </div>
+        </a>
+    </div>
+    <div class="col-md-4 recommand-holder" style="height: 250px">
+        <a href="./item?id=1409532820">
+            <div class="thumbnail" style="height: 250px;">
+                <img
+                    alt="200x200"
+                    src="http://img3m0.ddimg.cn/25/23/1409532820-1_u_2.jpg"
+                    width="100px"
+                    height="100px"
+                />
+                <div class="caption">
+                    <a href="./item?id=1409532820">
+                        网易严选 男式无缝休闲运动T恤</a
+                    >
+                </div>
+                <font color="#FF0000" size="1px"
+                    >夏日清凉运动 吸湿快干透气</font
+                >
+            </div>
+        </a>
+    </div>
+    <div class="col-md-4 recommand-holder" style="height: 250px">
+        <a href="./item?id=1137386549">
+            <div class="thumbnail" style="height: 250px;">
+                <img
+                    alt="200x200"
+                    src="http://img3m9.ddimg.cn/2/0/1137386549-1_u_7.jpg"
+                    width="100px"
+                    height="100px"
+                />
+                <div class="caption">
+                    <a href="./item?id=1137386549">
+                        【元旦特惠】户外运动T恤 POLO衫 男女透气吸湿快干翻领短袖休闲运动T恤</a
+                    >
+                </div>
+                <font color="#FF0000" size="1px"
+                    >满100减30 满200减60 满300减100</font
+                >
+            </div>
+        </a>
+    </div>
+    <div class="col-md-4 recommand-holder" style="height: 250px">
+        <a href="./item?id=1395508978">
+            <div class="thumbnail" style="height: 250px;">
+                <img
+                    alt="200x200"
+                    src="http://img3m8.ddimg.cn/28/32/1395508978-1_u_3.jpg"
+                    width="100px"
+                    height="100px"
+                />
+                <div class="caption">
+                    <a href="./item?id=1395508978">
+                        【抢购价】Kombucha瑜伽健身服女士速干透气四季混搭运动套装</a
+                    >
+                </div>
+                <font color="#FF0000" size="1px"
+                    >全场直降【折上领券再满减】</font
+                >
+            </div>
+        </a>
+    </div>
+    <div
+        class="col-md-4 recommand-holder"
+        style="height: 250px; margin-bottom: 200px"
+    >
+        <a href="./item?id=1260080206">
+            <div class="thumbnail" style="height: 250px;">
+                <img
+                    alt="200x200"
+                    src="http://img3m6.ddimg.cn/88/29/1260080206-1_u_105.jpg"
+                    width="100px"
+                    height="100px"
+                />
+                <div class="caption">
+                    <a href="./item?id=1260080206">
+                        【元旦特惠】伯希和户外防晒衣 简约轻薄 男女情侣运动休闲透气皮肤风衣</a
+                    >
+                </div>
+                <font color="#FF0000" size="1px"
+                    >满100减30 满200减60 满300减100</font
+                >
+            </div>
+        </a>
+    </div>
+</div>
+<div class="col-md-3 col-lg-3">
+    <h3>本站作者</h3>
+    <div class="col-md-6 col-lg-6" style="margin-bottom: 20px">
+        <center>
+            <img src="../static/djy.jpg" alt="djy" width="77%" />
+        </center>
+        <center><font size="3px">丁健宇</font></center>
+    </div>
+    <div class="col-md-6 col-lg-6" style="margin-bottom: 20px">
+        <img src="../static/djy_qr.jpg" alt="djy_qr" width="100%" />
+    </div>
+    <div class="col-md-6 col-lg-6" style="margin-bottom: 20px">
+        <center>
+            <img src="../static/jsy.jpg" alt="jsy" width="77%" />
+        </center>
+        <center><font size="3px">江书洋</font></center>
+    </div>
+    <div class="col-md-6 col-lg-6" style="margin-bottom: 20px">
+        <img src="../static/jsy_qr.png" alt="jsy_qr" width="100%" />
+    </div>
+    <div class="col-md-6 col-lg-6" style="margin-bottom: 20px">
+        <center>
+            <img src="../static/ywl.jpg" alt="ywl" width="77%" />
+        </center>
+        <center><font size="3px">易文龙</font></center>
+    </div>
+    <div class="col-md-6 col-lg-6" style="margin-bottom: 20px">
+        <img src="../static/ywl_qr.jpg" alt="ywl_qr" width="100%" />
+    </div>
+    <div class="col-md-6 col-lg-6" style="margin-bottom: 20px">
+        <center>
+            <img src="../static/zrh.jpg" alt="zrh" width="77%" />
+        </center>
+        <center><font size="3px">张若涵</font></center>
+    </div>
+    <div class="col-md-6 col-lg-6" style="margin-bottom: 20px">
+        <img src="../static/zrh_qr.jpg" alt="zrh_qr" width="100%" />
     </div>
 </div>
 {% endblock %}

@@ -7,12 +7,14 @@ LOGO_DATASET_PATH = os.path.join(os.getcwd(), 'app', 'logo_search', 'logo', 'tra
 
 def logo_matching(target_img_path):
     image1 = cv2.imread(target_img_path, cv2.IMREAD_GRAYSCALE)
+    print(image1.shape)
     img_list = os.listdir(LOGO_DATASET_PATH)
     best_match_img = ''
     best_match_num = 0
     for img in img_list:
         img_path = os.path.join(LOGO_DATASET_PATH, img)
         image2 = cv2.imread(img_path, cv2.IMREAD_GRAYSCALE)
+        # print(image1.shape, image2.shape)
         sift = cv2.xfeatures2d.SIFT_create()
         kp1, des1 = sift.detectAndCompute(image1, None)
         kp2, des2 = sift.detectAndCompute(image2, None)
@@ -31,6 +33,8 @@ def logo_matching(target_img_path):
             best_match_num = len(good_matches)
             best_match_img = img
     brand = best_match_img.split('_')[0]
+    if brand ==  'puma':
+        return "彪马"
     return brand
 
 ## puma

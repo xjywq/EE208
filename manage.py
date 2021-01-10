@@ -9,7 +9,8 @@ def StopNone(content):
     return content
 
 def get_first(content):
-    content = json.loads(content)
+    if isinstance(content, str):
+        content = json.loads(content)
     return content[0]
 
 app.add_template_filter(StopNone, 'StopNone')

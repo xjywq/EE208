@@ -239,6 +239,7 @@ def upload_logo():
             print(filename)
             file.save(os.path.join(UPLOAD_FOLDER, filename))
             filepath = os.path.join(UPLOAD_FOLDER, filename)
+            print(filepath)
             content = logo_matching(filepath)
             return redirect(url_for('main.brand_result', content=content))
     return render_template("upload_logo.html")

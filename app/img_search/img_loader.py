@@ -122,7 +122,7 @@ class DataLoader:
                             input_image = input_image.cuda()
                         input_image = torch.unsqueeze(input_image, 0)
                         image_feature = self.__get_img_features(input_image)
-                        image_feature = image_feature.detach().numpy()
+                        image_feature = image_feature.cpu().detach().numpy()
                         img_list.append((image_feature, item_id))
                         np.save(os.path.join('np/', str(item_id)+'_{}.npy'.format(index)), image_feature)
                     except:
