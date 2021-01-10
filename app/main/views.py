@@ -16,6 +16,7 @@ from . import main
 from .EE208_ES_FP_class import ES_FP_search
 from .forms import SearchForm, UploadForm, images
 from .WordCloud import cut_comment_seg, wordcloud_base
+from ..logo_search.logo_matching import logo_matching
 
 
 def random_filename(filename):
@@ -207,35 +208,6 @@ def upload():
     return render_template("upload.html")
 
 
-'''
-@csrf.exempt
-@main.route('/upload', methods = ['GET', 'POST'])
-def upload():
-    # configure_uploads(main, images)
-    print(request.method)
-
-    form = UploadForm()
-    if form.validate_on_submit():
-        filename = images.save(form.img_file.data)
-        print(filename)
-        
-        f = form.img_file.data
-        print("Here1")
-        # f = request.files['img_file']
-        filename =random_filename(f.filename)
-        print(filename)
-        
-        f.save(os.path.join(file_path, filename))
-        
-        # session['filenames'] = [filename]
-        # search_res = [SportItem.query.filter_by(id=i).first() for i in all_id]
-        return render_template('index.html')
-        # return redirect(url_for('img_result', filename = filename))
-    print("Here2")
-    return render_template("upload.html", form=form)
-'''
-
-
 @main.route('/img_result', methods=['GET'])
 def img_result():
     filename = request.args.get('filename')
@@ -254,6 +226,22 @@ def img_result():
     pagination = Pagination(found=found, page=page, search=True,
                             total=found, per_page=per_page, bs_version=4)
     return render_template('result.html', res=res, keyword="", pagination=pagination)
+
+
+@csrf.exempt
+@main.route('/upload_logo', methods=['GET', 'POST'])
+def upload_logo():
+    UPLOAD_FOLDER = os.path.join(os.getcwd(), 'app', 'upload')
+    if request.method == 'POST':
+        file = request.files['file']
+        if file and allowed_file(file.filename):
+            filename = file.filename
+            print(filename)
+            file.save(os.path.join(UPLOAD_FOLDER, filename))
+            filepath = os.path.join(UPLOAD_FOLDER, filename)
+            content = logo_matching(filepath)
+            return redirect(url_for('main.brand_result', content=content))
+    return render_template("upload_logo.html")
 
 
 @main.route('/item', methods=["GET"])
@@ -302,3 +290,4 @@ def get_wordcloud_chart():
     id = int(id)
     c = wordcloud_base(id)
     return c.dump_options_with_quotes()
+

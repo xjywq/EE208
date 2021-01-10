@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+
+{% block title %}Sportee Search - Search{% endblock %}
+
+{% block page_content %}
+
+<div class="row">
+    <style >
+
+
+    </style>
+    
+    <div class="row">
+        <div class="col-md-4 col-lg-3" >
+            <img src="../static/icon.png" alt="icon" width="160" height="166">
+        </div>
+
+        <div class="col-md-8 col-lg-9" >
+            <form method="post" enctype="multipart/form-data">
+                <input type=file name=file>
+                <input type=submit value=搜索>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
