@@ -1,21 +1,23 @@
 import os
 import re
 import uuid
+from flask import current_app
 
 from flask import (redirect, render_template, request, send_from_directory,
                    session, url_for)
 from flask_paginate import Pagination, get_page_parameter
 from werkzeug.datastructures import ImmutableMultiDict
 
-from .. import db
+from .. import db, csrf, app
 from ..models import SportItem
 from . import main
 from .EE208_ES_FP_class import ES_FP_search
-from .forms import SearchForm, UploadForm
+from .forms import SearchForm, UploadForm, images
 from config import basedir
 
-def query():
-    pass
+from ..img_search.evaluation import query
+
+
 def random_filename(filename):
     ext = os.path.splitext(filename)[1]
     new_filename = uuid.uuid4().hex + ext
@@ -166,15 +168,51 @@ def brand_result():
         print(form.errors, "错误信息")
     return render_template("index.html", form=form)
 
+
+def allowed_file(filename):
+    ALLOWED_EXTENSIONS = set(['png', 'jpg', 'jpeg'])
+    return '.' in filename and \
+           filename.rsplit('.', 1)[1] in ALLOWED_EXTENSIONS
+
+
+
+@csrf.exempt
+@app.route('/uploads/<filename>')
+def uploaded_file(filename):
+    UPLOAD_FOLDER = os.path.join(os.getcwd(), 'app', 'upload')
+    print(UPLOAD_FOLDER)
+    return send_from_directory(UPLOAD_FOLDER, filename)
+
+
+@csrf.exempt
 @main.route('/upload', methods = ['GET', 'POST'])
 def upload():
+    UPLOAD_FOLDER = os.path.join(os.getcwd(), 'app', 'upload')
+    if request.method == 'POST':
+        file = request.files['file']
+        if file and allowed_file(file.filename):
+            filename = file.filename
+            print(filename)
+            file.save(os.path.join(UPLOAD_FOLDER, filename))
+            return redirect(url_for('main.img_result', filename=filename))
+    return render_template("upload.html")
+                          
+
+'''
+@csrf.exempt
+@main.route('/upload', methods = ['GET', 'POST'])
+def upload():
+    # configure_uploads(main, images)
     print(request.method)
 
     form = UploadForm()
     if form.validate_on_submit():
-        # f = form.img_file.data
-        print("Here")
-        f = request.files['img_file']
+        filename = images.save(form.img_file.data)
+        print(filename)
+        
+        f = form.img_file.data
+        print("Here1")
+        # f = request.files['img_file']
         filename =random_filename(f.filename)
         print(filename)
         
@@ -184,19 +222,22 @@ def upload():
         # search_res = [SportItem.query.filter_by(id=i).first() for i in all_id]
         return render_template('index.html')
         # return redirect(url_for('img_result', filename = filename))
-    print("Here")
+    print("Here2")
     return render_template("upload.html", form=form)
+'''
 
 
 @main.route('/img_result', methods=['GET'])
 def img_result():
     filename = request.args.get('filename')
-    print(filename)
+    UPLOAD_FOLDER = os.path.join(os.getcwd(), 'app', 'upload')
+    filepath = os.path.join(UPLOAD_FOLDER, filename)
+    print(filepath)
     print('____________________________')
     page = request.args.get(get_page_parameter(), type=int, default=1)
-    
     per_page = int(request.args.get('per_page', default = 20)) # 这样可以整除
-    all_id = query(os.path.join(file_path, filename))
+    all_id = query(filepath)
+
     search_res = [SportItem.query.filter_by(id=i).first() for i in all_id]
     res = [single for single in search_res[(page - 1) * per_page: page * per_page]]
     found = len(search_res)
