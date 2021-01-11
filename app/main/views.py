@@ -35,9 +35,7 @@ def index():
         form = SearchForm()
         return render_template("index.html", form=form)
     else:
-        
         form = SearchForm(formdata=request.form)
-        print(request.form)
         if form.validate():  # 对用户提交数据进行校验，form.data是校验完成后的数据字典
             print("用户提交的数据用过格式验证，值为：%s" % form.data)
             return "登录成功"
