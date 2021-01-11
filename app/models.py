@@ -1,5 +1,6 @@
-from . import db
 import json
+
+from . import db
 
 
 class SportItem(db.Model):

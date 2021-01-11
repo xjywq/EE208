@@ -2,7 +2,8 @@ import os
 
 import cv2
 
-LOGO_DATASET_PATH = os.path.join(os.getcwd(), 'app', 'logo_search', 'logo', 'train')
+LOGO_DATASET_PATH = os.path.join(
+    os.getcwd(), 'app', 'logo_search', 'logo', 'train')
 
 
 def logo_matching(target_img_path):
@@ -33,11 +34,12 @@ def logo_matching(target_img_path):
             best_match_num = len(good_matches)
             best_match_img = img
     brand = best_match_img.split('_')[0]
-    if brand ==  'puma':
+    if brand == 'puma':
         return "彪马"
     return brand
 
-## puma
+
+# puma
 if __name__ == '__main__':
     target_path = 'logo/test.jpg'
     print(logo_matching(target_path))

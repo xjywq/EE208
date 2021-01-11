@@ -42,7 +42,8 @@ class DataLoader:
         os.environ['CUDA_VISIBLE_DEVICES'] = '0'
         self.use_gpu = torch.cuda.is_available()
         print('Load model: {}'.format(model_name))
-        self.model = torch.hub.load('pytorch/vision', model_name, pretrained=True)
+        self.model = torch.hub.load(
+            'pytorch/vision', model_name, pretrained=True)
         if self.use_gpu:
             self.model = self.model.cuda()
         normalize = transforms.Normalize(mean=[0.485, 0.456, 0.406],
@@ -86,7 +87,7 @@ class DataLoader:
         proxy_handler = request.ProxyHandler({
             "http": proxyMeta,
             "https": proxyMeta,
-        })        
+        })
 
         opener = request.build_opener(proxy_handler)
         request.install_opener(opener)
@@ -104,7 +105,8 @@ class DataLoader:
         print("Extracting img features...")
         if not os.path.exists('np/'):
             os.mkdir('np/')
-        widgets = ['Progress: ', Percentage(), ' ', Bar('#'), ' ', Timer(), ' ', ETA()]
+        widgets = ['Progress: ', Percentage(), ' ', Bar('#'), ' ',
+                   Timer(), ' ', ETA()]
         pbar = ProgressBar(widgets=widgets, maxval=10*self.id_num).start()
         img_list = []
         pb_now = 0
@@ -114,7 +116,8 @@ class DataLoader:
             for index, img in enumerate(img_set):
                 if not os.path.exists('np/'+str(item_id)+'_{}.npy'.format(index)):
                     self._save_img(img, str(item_id)+'_{}'.format(index))
-                    path = os.path.join('data/image/', str(item_id)+'_{}.jpg'.format(index))
+                    path = os.path.join(
+                        'data/image/', str(item_id)+'_{}.jpg'.format(index))
                     try:
                         image = default_loader(path)
                         input_image = self.trans(image)
@@ -124,12 +127,13 @@ class DataLoader:
                         image_feature = self.__get_img_features(input_image)
                         image_feature = image_feature.cpu().detach().numpy()
                         img_list.append((image_feature, item_id))
-                        np.save(os.path.join('np/', str(item_id)+'_{}.npy'.format(index)), image_feature)
+                        np.save(os.path.join('np/', str(item_id) +
+                                             '_{}.npy'.format(index)), image_feature)
                     except:
                         continue
             pbar.update(10 * pb_now + 1)
         pbar.finish()
-    
+
     def extract_single_img_embed(self, imgpath):
         if 'http' in imgpath:
             self._save_img(imgpath, imgpath.replace('/'))
@@ -144,7 +148,6 @@ class DataLoader:
         image_feature = self.__get_img_features(input_image)
         image_feature = image_feature.cpu().detach().numpy()
         return image_feature
-
 
 
 if __name__ == "__main__":

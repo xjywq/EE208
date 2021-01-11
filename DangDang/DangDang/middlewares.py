@@ -13,6 +13,7 @@ from fake_useragent import FakeUserAgent
 from .settings import PROXIES
 PY3 = sys.version_info[0] >= 3
 
+
 def base64ify(bytes_or_str):
     if PY3 and isinstance(bytes_or_str, str):
         input_bytes = bytes_or_str.encode('utf8')
@@ -24,6 +25,7 @@ def base64ify(bytes_or_str):
         return output_bytes.decode('ascii')
     else:
         return output_bytes
+
 
 class DangdangSpiderMiddleware:
     # Not all methods need to be defined. If a method is not defined,
@@ -118,16 +120,20 @@ class DangdangDownloaderMiddleware:
     def spider_opened(self, spider):
         spider.logger.info('Spider opened: %s' % spider.name)
 
+
 class RandomUserAgent(object):
     """
     define random agentuser
     """
+
     def __init__(self) -> None:
         self.ua = FakeUserAgent()
+
     def process_request(self, request, spider):
         request.headers.setdefault('User-Agent', self.ua.random)
 
-class ProxyMiddleware(object):                
+
+class ProxyMiddleware(object):
     def process_request(self, request, spider):
         # 代理服务器(产品官网 www.16yun.cn)
         #! 代理服务, 需要手动设置
@@ -138,12 +144,12 @@ class ProxyMiddleware(object):
         proxyUser = "16VZCZVF"
         proxyPass = "944085"
 
-        request.meta['proxy'] = "http://{0}:{1}".format(proxyHost,proxyPort)
+        request.meta['proxy'] = "http://{0}:{1}".format(proxyHost, proxyPort)
 
         # 添加验证头
         encoded_user_pass = base64ify(proxyUser + ":" + proxyPass)
-        request.headers['Proxy-Authorization'] = 'Basic ' + encoded_user_pass                    
+        request.headers['Proxy-Authorization'] = 'Basic ' + encoded_user_pass
 
         # 设置IP切换头(根据需求)
-        tunnel = random.randint(1,10000)
+        tunnel = random.randint(1, 10000)
         request.headers['Proxy-Tunnel'] = str(tunnel)

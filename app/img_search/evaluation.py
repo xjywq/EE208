@@ -6,15 +6,17 @@ import numpy as np
 from progressbar import *
 
 from config import *
+
+from .img_loader import *
 from .LSH import *
 from .utils import *
-from .img_loader import *
 
 
 def build_index():
     if not os.path.exists('img_infos.npy'):
         img_list = []
-        widgets = ['Creating index: ', Percentage(), ' ', Bar('#'), ' ', Timer(), ' ', ETA()]
+        widgets = ['Creating index: ', Percentage(), ' ', Bar('#'),
+                   ' ', Timer(), ' ', ETA()]
         np_list = os.listdir('np/')
         total = len(np_list)
         pbar = ProgressBar(widgets=widgets, maxval=10*total).start()
@@ -33,7 +35,8 @@ def build_index():
 
 def build_LSH_index(lsh):
     if not os.path.exists('LSH_index.npy'):
-        widgets = ['Creating LSH index: ', Percentage(), ' ', Bar('#'), ' ', Timer(), ' ', ETA()]
+        widgets = ['Creating LSH index: ', Percentage(), ' ', Bar('#'),
+                   ' ', Timer(), ' ', ETA()]
         np_list = os.listdir('np/')
         total = len(np_list)
         pbar = ProgressBar(widgets=widgets, maxval=10*total).start()
@@ -48,8 +51,10 @@ def build_LSH_index(lsh):
     lsh.load()
     return lsh
 
+
 def get_index():
     return np.load(os.path.join(os.getcwd(), 'app', 'img_search', 'img_infos.npy'), allow_pickle=True)
+
 
 def get_lsh_index(lsh):
     lsh.load()
@@ -70,7 +75,8 @@ def lsh_search(lsh, query_vector, MAX_QUERY_NUM):
 def KNN_search(index, query_vector, MAX_QUERY_NUM):
     start = time.time()
     dist_list = []
-    widgets = ['Calculating distance: ', Percentage(), ' ', Bar('#'), ' ', Timer(), ' ', ETA()]
+    widgets = ['Calculating distance: ', Percentage(), ' ', Bar('#'),
+               ' ', Timer(), ' ', ETA()]
     total = len(index)
     pbar = ProgressBar(widgets=widgets, maxval=10*total).start()
     for i, f in enumerate(index):
@@ -96,7 +102,6 @@ def query(query_img_path):
         lsh = LSH(100, 2048, hash_function='dot')
         lsh = get_lsh_index(lsh)
         return lsh_search(lsh, query_embed, MAX_QUERY_NUM)
-
 
 
 if __name__ == "__main__":

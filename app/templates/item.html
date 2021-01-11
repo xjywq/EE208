@@ -1,10 +1,8 @@
 {% extends "base.html" %}
 
 
-{% block title %}Sportee Search - {{item.Name}}{% endblock %} {% block
+{% block title %}IPentaE - {{item.Name}}{% endblock %} {% block
 page_content %}
-<meta name="referrer" content="no-referrer" />
-<meta charset="UTF-8">
 <script src="https://cdn.bootcss.com/jquery/3.0.0/jquery.min.js"></script>
 <script type="text/javascript" src="https://assets.pyecharts.org/assets/echarts.min.js"></script>
 <script type="text/javascript" src="https://assets.pyecharts.org/assets/echarts-wordcloud.min.js"></script>
@@ -64,7 +62,7 @@ page_content %}
                 <span class="percent">评分</span>
                 <div class="progress">
                     <div class="progress-done"
-                    style="width:{{item_detail["rate"]}}%">
+                    style="width:{{item_detail['rate']}}%">
                 </div>
             </div>
             <span class="percent">{{item_detail["rate"]}}%</span>
@@ -151,7 +149,7 @@ page_content %}
 	{% for item in recommand[0] %}
     <div class="col-md-2 recommand-holder">
         <div class="thumbnail">
-            <img alt="200x200" src={{item["image_url"][1]}} />
+            <img alt="200x200" src={{item["image_url"][0]}} />
             <div class="caption">
                 <a href=/item?id={{item["id"]}}>{{item["title"] | striptags}}</a>
 			</div>
@@ -203,6 +201,7 @@ page_content %}
         var chart = echarts.init(document.getElementById('wordcloud'), 'white', {renderer: 'canvas'});
         $.ajax({
             type: "GET",
+            useCORS: true,
             url: "http://127.0.0.1:8080/wordcloudChart?id="+document.getElementById("title").getAttribute("num"),
             dataType: 'json',
             success: function (result) {

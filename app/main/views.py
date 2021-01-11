@@ -18,6 +18,20 @@ from .forms import SearchForm, UploadForm, images
 from .WordCloud import cut_comment_seg, wordcloud_base
 from ..logo_search.logo_matching import logo_matching
 
+from flask import make_response
+
+@app.after_request
+def af_request(resp):     
+    """
+    #请求钩子，在所有的请求发生后执行，加入headers。
+    :param resp:
+    :return:
+    """
+    resp = make_response(resp)
+    resp.headers['Access-Control-Allow-Origin'] = '*'
+    resp.headers['Access-Control-Allow-Methods'] = 'GET,POST'
+    resp.headers['Access-Control-Allow-Headers'] = 'x-requested-with,content-type'
+    return resp
 
 def random_filename(filename):
     ext = os.path.splitext(filename)[1]
@@ -200,7 +214,7 @@ def uploaded_file(filename):
 def upload():
     UPLOAD_FOLDER = os.path.join(os.getcwd(), 'app', 'upload')
     if request.method == 'POST':
-        file = request.files['file']
+        file = request.files['input_image']
         if file and allowed_file(file.filename):
             filename = file.filename
             print(filename)
@@ -220,10 +234,10 @@ def img_result():
     per_page = int(request.args.get('per_page', default=20))  # 这样可以整除
     all_id = query(filepath)
 
-    res = [SportItem.query.filter_by(id=i).first() for i in all_id[(
+    search_res = [SportItem.query.filter_by(id=i).first() for i in all_id]
+    res = [single for single in search_res[(
         page - 1) * per_page: page * per_page]]
-
-    found = len(res)
+    found = len(search_res)
     pagination = Pagination(found=found, page=page, search=True,
                             total=found, per_page=per_page, bs_version=4)
     return render_template('result.html', res=res, keyword="", pagination=pagination)
