@@ -220,10 +220,10 @@ def img_result():
     per_page = int(request.args.get('per_page', default=20))  # 这样可以整除
     all_id = query(filepath)
 
-    search_res = [SportItem.query.filter_by(id=i).first() for i in all_id]
-    res = [single for single in search_res[(
+    res = [SportItem.query.filter_by(id=i).first() for i in all_id[(
         page - 1) * per_page: page * per_page]]
-    found = len(search_res)
+
+    found = len(res)
     pagination = Pagination(found=found, page=page, search=True,
                             total=found, per_page=per_page, bs_version=4)
     return render_template('result.html', res=res, keyword="", pagination=pagination)
@@ -237,10 +237,8 @@ def upload_logo():
         file = request.files['file']
         if file and allowed_file(file.filename):
             filename = file.filename
-            print(filename)
             file.save(os.path.join(UPLOAD_FOLDER, filename))
             filepath = os.path.join(UPLOAD_FOLDER, filename)
-            print(filepath)
             content = logo_matching(filepath)
             return redirect(url_for('main.brand_result', content=content))
     return render_template("upload_logo.html")
@@ -292,6 +290,7 @@ def get_wordcloud_chart():
     id = int(id)
     c = wordcloud_base(id)
     return c.dump_options_with_quotes()
+
 
 @main.route('/500', methods=['GET'])
 def Five():
