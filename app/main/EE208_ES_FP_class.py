@@ -64,7 +64,7 @@ class ES_FP_search():
                 }
             },
             "from": 0,
-            "size": 20
+            "size": 500
         }
         hit = self.es.search(index="dd_pe_item", body=json.dumps(query))
         result = []
@@ -105,7 +105,7 @@ class ES_FP_search():
                 }
             },
             "from": 0,
-            "size": 20
+            "size": 500
         }
         hit = self.es.search(index="dd_pe_item", body=json.dumps(query))
         result = []
@@ -149,7 +149,7 @@ class ES_FP_search():
                 }
             },
             "from": 0,
-            "size": 20
+            "size": 500
         }
         hit = self.es.search(index="dd_pe_item", body=json.dumps(query))
         result = []

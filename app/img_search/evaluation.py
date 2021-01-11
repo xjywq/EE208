@@ -62,8 +62,8 @@ def lsh_search(lsh, query_vector, MAX_QUERY_NUM):
     end = time.time()
     res = [int(item[0][1]) for item in dist_list[:MAX_QUERY_NUM]]
     end = time.time()
-    print('Time for LSH searchings: {:.5f}'.format(end - start))
-    print(res[:500])
+    # print('Time for LSH searchings: {:.5f}'.format(end - start))
+    # print(res[:500])
     return res
 
 
@@ -81,8 +81,8 @@ def KNN_search(index, query_vector, MAX_QUERY_NUM):
     dist_list.sort(key=lambda x: x[0])
     res = [int(item[1]) for item in dist_list[:MAX_QUERY_NUM]]
     end = time.time()
-    print('Time for KNN searchings: {:.5f}'.format(end - start))
-    print(res[:500])
+    # print('Time for KNN searchings: {:.5f}'.format(end - start))
+    # print(res[:500])
     return res
 
 

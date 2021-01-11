@@ -120,7 +120,7 @@ def brand_result():
 
     form: SearchForm = SearchForm(formdata=ImmutableMultiDict(
         [('content', request.args.get('content'))]))
-    print(form.data)
+
     if form.validate():  # 对用户提交数据进行校验，form.data是校验完成后的数据字典
         print("用户提交的数据用过格式验证，值为：{}".format(form.data))
 
@@ -163,6 +163,7 @@ def brand_result():
         # search_res = SportItem.query.filter_by(id=int(command)).first()
         # 我们认为search_res是一个数组，首先统计一下，然后下载pagination
         found = len(search_res)
+
         page = request.args.get(get_page_parameter(), type=int, default=1)
 
         per_page = int(request.args.get('per_page', default=20))  # 这样可以整除
@@ -292,3 +293,6 @@ def get_wordcloud_chart():
     c = wordcloud_base(id)
     return c.dump_options_with_quotes()
 
+@main.route('/500', methods=['GET'])
+def Five():
+    return render_template("500.html")

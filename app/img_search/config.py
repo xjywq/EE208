@@ -5,5 +5,5 @@ MODEL_NAME = 'resnet50'
 
 # search method: 0-KNN, 1-LSH
 SEARCH_METHOD = 0
-MAX_QUERY_NUM = 500
+MAX_QUERY_NUM = 200
 LSH_INDEX_NAME = 'LSH_index'
