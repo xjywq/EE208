@@ -166,6 +166,9 @@ lxml==3.7.3
 progressbar==2.5
 PyTorch==1.6.0
 torchvision==0.7.0
+flask-paginate==0.7.1
+flask-uploads==0.2.1
+snownlp>=0.9.8,<=0.12.3
 ```
 
 ## 项目分工
