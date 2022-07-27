@@ -15,4 +15,4 @@ PyTorch==1.6.0
 torchvision==0.7.0
 flask-paginate==0.7.1
 flask-uploads==0.2.1
-snownlp==0.12.3
+snownlp>=0.9.8,<=0.12.3
